@@ -81,12 +81,9 @@ Role.destroy_all
 # Do not use hard-coded foreign key IDs.
 
 # Studio information
-studio1 = Studio.new
-studio1["name"] = "Warner Bros."
-studio1.save
-
-# Save Warner bros into a variable
-warner = Studio.find_by({"name" => "Warner Bros."})
+warner = Studio.new
+warner["name"] = "Warner Bros."
+warner.save
 
 # Movie information
 begins = Movie.new
@@ -156,21 +153,7 @@ anne_hathaway = Actor.new
 anne_hathaway["name"] = "Anne Hathaway"  #11
 anne_hathaway.save
 
-
-
 # Batman begins
-role1 = Role.new
-role1["movie_id"] = begins["id"]
-role1["actor_id"] = christian_bale["id"]
-role1["character_name"] = "Bruce Wayne"
-role1.save
-
-begins_wayne = Role.new
-begins_wayne["movie_id"] = begins["id"]
-begins_wayne["actor_id"] = christian_bale["id"]
-begins_wayne["character_name"] = "Bruce Wayne"
-begins_wayne.save
-
 begins_wayne = Role.new
 begins_wayne["movie_id"] = begins["id"]
 begins_wayne["actor_id"] = christian_bale["id"]
@@ -208,12 +191,6 @@ dk_wayne["actor_id"] = christian_bale["id"]
 dk_wayne["character_name"] = "Bruce Wayne"
 dk_wayne.save
 
-dk_alfred = Role.new
-dk_alfred["movie_id"] = dark_knight["id"]
-dk_alfred["actor_id"] = michael_caine["id"]
-dk_alfred["character_name"] = "Alfred"
-dk_alfred.save
-
 dk_joker = Role.new
 dk_joker["movie_id"] = dark_knight["id"]
 dk_joker["actor_id"] = heath_ledger["id"]
@@ -226,6 +203,12 @@ dk_harvey["actor_id"] = aaron_eckhart["id"]
 dk_harvey["character_name"] = "Harvey Dent"
 dk_harvey.save
 
+dk_alfred = Role.new
+dk_alfred["movie_id"] = dark_knight["id"]
+dk_alfred["actor_id"] = michael_caine["id"]
+dk_alfred["character_name"] = "Alfred"
+dk_alfred.save
+
 dk_rachel = Role.new
 dk_rachel["movie_id"] = dark_knight["id"]
 dk_rachel["actor_id"] = maggie_gyllenhaal["id"]
@@ -234,33 +217,33 @@ dk_rachel.save
 
 #The Dark Knight Rises
 rises_wayne = Role.new
-rises_wayne['movie_id'] = rises['id']
-rises_wayne['actor_id'] = christian_bale['id']
-rises_wayne['character_name'] = 'Bruce Wayne'
+rises_wayne["movie_id"] = rises["id"]
+rises_wayne["actor_id"] = christian_bale["id"]
+rises_wayne["character_name"] = 'Bruce Wayne'
 rises_wayne.save
 
 rises_gordon = Role.new
-rises_gordon['movie_id'] = rises['id']
-rises_gordon['actor_id'] = gary_oldman['id']
-rises_gordon['character_name'] = 'Commissioner Gordon'
+rises_gordon["movie_id"] = rises["id"]
+rises_gordon["actor_id"] = gary_oldman["id"]
+rises_gordon["character_name"] = 'Commissioner Gordon'
 rises_gordon.save
 
 rises_bane = Role.new
-rises_bane['movie_id'] = rises['id']
-rises_bane['actor_id'] = tom_hardy['id']
-rises_bane['character_name'] = 'Bane'
+rises_bane["movie_id"] = rises["id"]
+rises_bane["actor_id"] = tom_hardy["id"]
+rises_bane["character_name"] = 'Bane'
 rises_bane.save
 
 rises_blake = Role.new
-rises_blake['movie_id'] = rises['id']
-rises_blake['actor_id'] = joseph_gordon_levitt['id']
-rises_blake['character_name'] = 'John Blake'
+rises_blake["movie_id"] = rises["id"]
+rises_blake["actor_id"] = joseph_gordon_levitt["id"]
+rises_blake["character_name"] = 'John Blake'
 rises_blake.save
 
 rises_kyle = Role.new
-rises_kyle['movie_id'] = rises['id']
-rises_kyle['actor_id'] = anne_hathaway['id']
-rises_kyle['character_name'] = 'Selina Kyle'
+rises_kyle["movie_id"] = rises["id"]
+rises_kyle["actor_id"] = anne_hathaway["id"]
+rises_kyle["character_name"] = 'Selina Kyle'
 rises_kyle.save
 
 # Prints a header for the movies output
@@ -269,7 +252,15 @@ puts "======"
 puts ""
 
 # Query the movies data and loop through the results to display the movies output.
-for each_movie
+for each_movie in Movie.all
+    title = each_movie["title"]
+    year_released = each_movie["year_released"]
+    rating = each_movie["rated"]
+    studio = Studio.find_by({"id" => each_movie["studio_id"]})
+    studio_name = studio["name"]
+
+    puts "#{title} #{year_released} #{rating} #{studio_name}"
+end
 
 # Prints a header for the cast output
 puts ""
@@ -278,4 +269,12 @@ puts "========"
 puts ""
 
 # Query the cast data and loop through the results to display the cast output for each movie.
-# TODO!
+for each_role in Role.all
+    movie = Movie.find_by({"id" => each_role["movie_id"]})
+    movie_title = movie["title"]
+    actor = Actor.find_by({"id" => each_role["actor_id"]})
+    actor_name = actor["name"]
+    character_name = each_role["character_name"]
+
+    puts "#{movie_title} #{actor_name} #{character_name}"
+end
